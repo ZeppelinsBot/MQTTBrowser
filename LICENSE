@@ -1,0 +1,15 @@
+Creative Commons Attribution-ShareAlike 4.0 International
+
+Copyright (c) 2026 ZeppelinsBot
+
+This work is licensed under the Creative Commons Attribution-ShareAlike 4.0
+International License. To view a copy of this license, visit
+http://creativecommons.org/licenses/by-sa/4.0/ or send a letter to
+Creative Commons, PO Box 1866, Mountain View, CA 94042, USA.
+
+This project is inspired by MQTT Explorer by Thomas Nordquist
+(https://github.com/thomasnordquist/MQTT-Explorer), also licensed under
+CC BY-SA 4.0. No source code from the original project was used.
+
+Concept and requirements: Zeppelin500 (https://github.com/Zeppelin500)
+Design, code and implementation: ZeppelinsBot (https://github.com/ZeppelinsBot)

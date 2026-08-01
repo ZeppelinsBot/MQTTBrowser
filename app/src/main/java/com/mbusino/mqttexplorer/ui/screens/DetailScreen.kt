@@ -40,6 +40,8 @@ import androidx.compose.ui.unit.dp
 import com.mbusino.mqttexplorer.viewmodel.DetailViewModel
 import com.mbusino.mqttexplorer.viewmodel.TreeViewModel
 import kotlinx.coroutines.delay
+import org.json.JSONObject
+import org.json.JSONArray
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -155,7 +157,7 @@ fun DetailScreen(
                                     }
                                 }
                                 Text(
-                                    text = message.payload,
+                                    text = formatPayload(message.payload),
                                     style = MaterialTheme.typography.bodyMedium,
                                     fontFamily = FontFamily.Monospace,
                                     maxLines = 20,
@@ -166,6 +168,23 @@ fun DetailScreen(
                     }
                 }
             }
+        }
+    }
+}
+
+private fun formatPayload(payload: String): String {
+    return try {
+        // Try as JSON object
+        val json = org.json.JSONObject(payload)
+        json.toString(2)
+    } catch (_: Exception) {
+        try {
+            // Try as JSON array
+            val json = org.json.JSONArray(payload)
+            json.toString(2)
+        } catch (_: Exception) {
+            // Not JSON, return as-is
+            payload
         }
     }
 }

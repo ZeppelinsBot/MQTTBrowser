@@ -93,7 +93,7 @@ fun ConnectionScreen(
     Scaffold(
         topBar = {
             TopAppBar(
-                title = { Text("MQTT Explorer") },
+                title = { Text("MQTT Browser") },
                 colors = TopAppBarDefaults.topAppBarColors(
                     containerColor = MaterialTheme.colorScheme.primaryContainer,
                     titleContentColor = MaterialTheme.colorScheme.onPrimaryContainer

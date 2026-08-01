@@ -17,11 +17,9 @@ Inspired by [MQTT Explorer](https://github.com/thomasnordquist/MQTT-Explorer) by
 - **Manual Reconnect** — Reconnect button when connection is lost
 - **Dark Mode** — Follows system theme
 
-## Screenshots
-
 | Connection | Topic Tree | Message Detail |
 |:---:|:---:|:---:|
-| <img src="screenshots/01_connection.jpg" width="180"> | <img src="screenshots/02_topic_tree.jpg" width="180"> | <img src="screenshots/03_detail_view.jpg" width="180"> |
+| ![Connection](screenshots/01_connection.jpg) | ![Topic Tree](screenshots/02_topic_tree.jpg) | ![Detail](screenshots/03_detail_view.jpg) |
 
 ## Requirements
 

@@ -2,6 +2,25 @@
 
 All notable changes to MQTT Browser will be documented in this file.
 
+## [1.4] - 2026-08-01
+
+### Added
+- Expand/collapse for long messages (default 8 lines, "▶ tap to expand")
+- JSON Diff mode: changed values highlighted in green bold, unchanged dimmed in grey
+- Diff ON/OFF toggle in detail view top bar
+
+### Info
+- Designed for Waveshare-style devices that send full JSON every second
+
+## [1.3] - 2026-08-01
+
+### Added
+- JSON pretty-print: JSON payloads are now formatted with 2-space indentation
+- Non-JSON payloads (plain text, numbers) remain unchanged
+
+### Fixed
+- TopAppBar title in Connection Screen: "MQTT Explorer" → "MQTT Browser"
+
 ## [1.2] - 2026-08-01
 
 ### Changed

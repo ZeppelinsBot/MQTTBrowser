@@ -21,7 +21,7 @@ Inspired by [MQTT Explorer](https://github.com/thomasnordquist/MQTT-Explorer) by
 
 | Connection | Topic Tree | Message Detail |
 |:---:|:---:|:---:|
-| ![Connection](screenshots/01_connection.jpg) | ![Topic Tree](screenshots/02_topic_tree.jpg) | ![Detail](screenshots/03_detail_view.jpg) |
+| <img src="screenshots/01_connection.jpg" width="180"> | <img src="screenshots/02_topic_tree.jpg" width="180"> | <img src="screenshots/03_detail_view.jpg" width="180"> |
 
 ## Requirements
 

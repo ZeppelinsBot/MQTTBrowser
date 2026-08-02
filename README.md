@@ -93,7 +93,7 @@ This project was **inspired by** [MQTT Explorer](https://github.com/thomasnordqu
 
 ## License
 
-This project is released under the [CC BY-SA 4.0](https://creativecommons.org/licenses/by-sa/4.0/) license, consistent with the original MQTT Explorer.
+This project is released under the [GNU General Public License v3.0](LICENSE).
 
 ## Changelog
 

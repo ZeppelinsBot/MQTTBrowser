@@ -40,9 +40,33 @@ class TopicNode(
     }
 
     val sortedChildren: List<TopicNode>
-        get() = children.values.sortedBy { it.name }
+        get() = children.values.sortedWith(compareBy { naturalKey(it.name) })
 
     companion object {
+        /** Encodes a name as a padded string for natural sorting.
+         *  "abc2" -> "abc\t0000000002" so "abc2" < "abc10" */
+        private fun naturalKey(name: String): String {
+            val sb = StringBuilder()
+            var i = 0
+            while (i < name.length) {
+                if (name[i].isDigit()) {
+                    var j = i
+                    while (j < name.length && name[j].isDigit()) j++
+                    // Pad number to 12 digits for correct lexicographic order
+                    val num = name.substring(i, j)
+                    sb.append('\t')
+                    sb.append(num.padStart(12, '0'))
+                    i = j
+                } else {
+                    var j = i
+                    while (j < name.length && !name[j].isDigit()) j++
+                    sb.append(name.substring(i, j).lowercase())
+                    i = j
+                }
+            }
+            return sb.toString()
+        }
+
         fun buildTree(messages: Map<String, List<TopicMessage>>): TopicNode {
             val root = TopicNode("root", "")
             for ((topic, msgs) in messages) {

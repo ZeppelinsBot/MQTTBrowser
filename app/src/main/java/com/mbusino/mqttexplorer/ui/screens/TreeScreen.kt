@@ -9,6 +9,11 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
+import android.graphics.BitmapFactory
+import androidx.compose.foundation.Image
+import androidx.compose.ui.graphics.asImageBitmap
+import androidx.compose.ui.layout.ContentScale
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Add
 import androidx.compose.material.icons.filled.Close
@@ -63,14 +68,24 @@ fun TreeScreen(
         topBar = {
             TopAppBar(
                 title = {
-                    Column {
-                        Text("MQTT Browser")
-                        if (connectionState == ConnectionState.DISCONNECTED || connectionState == ConnectionState.ERROR) {
-                            Text(
-                                text = "Disconnected",
-                                style = MaterialTheme.typography.bodySmall,
-                                color = MaterialTheme.colorScheme.error
-                            )
+                    Row(verticalAlignment = Alignment.CenterVertically) {
+                        Image(
+                            bitmap = BitmapFactory.decodeResource(LocalContext.current.resources, com.mbusino.mqttexplorer.R.drawable.ic_logo).asImageBitmap(),
+                            contentDescription = "MQTT Browser Logo",
+                            modifier = Modifier
+                                .height(32.dp)
+                                .padding(end = 8.dp),
+                            contentScale = ContentScale.Fit
+                        )
+                        Column {
+                            Text("MQTT Browser")
+                            if (connectionState == ConnectionState.DISCONNECTED || connectionState == ConnectionState.ERROR) {
+                                Text(
+                                    text = "Disconnected",
+                                    style = MaterialTheme.typography.bodySmall,
+                                    color = MaterialTheme.colorScheme.error
+                                )
+                            }
                         }
                     }
                 },

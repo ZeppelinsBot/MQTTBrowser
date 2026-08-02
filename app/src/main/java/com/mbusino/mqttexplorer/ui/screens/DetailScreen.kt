@@ -175,7 +175,14 @@ private fun MessageCard(
     val isJson = isJsonPayload(message.payload)
     val formattedPayload = if (isJson) formatJson(message.payload) else message.payload
     val lineCount = formattedPayload.lines().size
-    val needsExpand = lineCount > 8 || formattedPayload.length > 400
+    val needsExpand = lineCount > 8 || formattedPayload.length > 600
+
+    // Pre-truncate: cut text to 8 lines when collapsed (reliable, no Compose maxLines quirks)
+    val truncatedPayload = if (needsExpand && !isExpanded) {
+        formattedPayload.lines().take(8).joinToString("\n") + "\n…"
+    } else {
+        formattedPayload
+    }
 
     Card(
         modifier = Modifier
@@ -223,9 +230,9 @@ private fun MessageCard(
 
             Spacer(modifier = Modifier.height(4.dp))
 
-            // Payload content
+            // Payload content — always use pre-truncated text (no maxLines quirks)
             if (isJson && diffEnabled && previousMessage != null && isJsonPayload(previousMessage.payload)) {
-                // JSON with diff highlighting
+                // JSON with diff highlighting (truncated inside buildJsonDiff)
                 val diffText = buildJsonDiff(message.payload, previousMessage.payload, isExpanded, needsExpand)
                 Text(
                     text = diffText,
@@ -236,21 +243,21 @@ private fun MessageCard(
             } else if (isJson) {
                 // JSON without diff
                 Text(
-                    text = formattedPayload,
+                    text = truncatedPayload,
                     style = MaterialTheme.typography.bodyMedium,
                     fontFamily = FontFamily.Monospace,
-                    maxLines = if (needsExpand && !isExpanded) 8 else Int.MAX_VALUE,
-                    overflow = TextOverflow.Ellipsis,
                     lineHeight = 18.sp
                 )
             } else {
                 // Plain text
                 Text(
-                    text = message.payload,
+                    text = if (needsExpand && !isExpanded) {
+                        message.payload.lines().take(8).joinToString("\n") + "\n…"
+                    } else {
+                        message.payload
+                    },
                     style = MaterialTheme.typography.bodyMedium,
-                    fontFamily = FontFamily.Monospace,
-                    maxLines = if (needsExpand && !isExpanded) 8 else Int.MAX_VALUE,
-                    overflow = TextOverflow.Ellipsis
+                    fontFamily = FontFamily.Monospace
                 )
             }
 
@@ -311,20 +318,12 @@ private fun buildJsonDiff(
         color = androidx.compose.ui.graphics.Color(0xFF1565C0) // Blue
     )
 
-    return buildAnnotatedString {
-        var lineCount = 0
-        val maxLines = if (needsExpand && !isExpanded) 8 else Int.MAX_VALUE
-
+    // Build the full diff string first
+    val fullDiff = buildAnnotatedString {
         append("{\n")
-        lineCount++
 
         val keys = currentJson.keys().asSequence().toList()
         for ((i, key) in keys.withIndex()) {
-            if (lineCount >= maxLines) {
-                append("  ...")
-                break
-            }
-
             val currentValue = currentJson.get(key).toString()
             val previousValue = previousJson.opt(key)?.toString()
             val changed = currentValue != previousValue
@@ -341,11 +340,18 @@ private fun buildJsonDiff(
 
             if (i < keys.size - 1) append(",")
             append("\n")
-            lineCount++
         }
 
         append("}")
     }
+
+    // Pre-truncate: cut at 8 actual lines when collapsed
+    if (needsExpand && !isExpanded) {
+        val text = fullDiff.toString()
+        val truncated = text.lines().take(8).joinToString("\n") + "\n…"
+        return AnnotatedString(truncated)
+    }
+    return fullDiff
 }
 
 private fun formatValue(value: Any?): String {

@@ -85,9 +85,7 @@ fun DetailScreen(
             TopAppBar(
                 title = {
                     Text(
-                        text = topicPath,
-                        maxLines = 1,
-                        overflow = TextOverflow.Ellipsis
+                        text = topicPath
                     )
                 },
                 navigationIcon = {

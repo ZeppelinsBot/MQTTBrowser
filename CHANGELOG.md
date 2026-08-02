@@ -2,6 +2,11 @@
 
 All notable changes to MQTT Browser will be documented in this file.
 
+## [1.8] - 2026-08-02
+
+### Added
+- Image rendering in detail view: JPEG, PNG, GIF, BMP, WebP auto-detection from raw MQTT bytes
+
 ## [1.7] - 2026-08-02
 
 ### Added

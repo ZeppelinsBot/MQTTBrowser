@@ -73,7 +73,7 @@ fun TreeScreen(
                             bitmap = BitmapFactory.decodeResource(LocalContext.current.resources, com.mbusino.mqttexplorer.R.drawable.ic_logo).asImageBitmap(),
                             contentDescription = "MQTT Browser Logo",
                             modifier = Modifier
-                                .height(32.dp)
+                                .height(40.dp)
                                 .padding(end = 8.dp),
                             contentScale = ContentScale.Fit
                         )

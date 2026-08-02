@@ -52,6 +52,7 @@ import android.graphics.BitmapFactory
 import androidx.compose.foundation.Image
 import androidx.compose.ui.graphics.asImageBitmap
 import androidx.compose.ui.layout.ContentScale
+import androidx.compose.ui.platform.LocalContext
 import com.mbusino.mqttexplorer.data.TopicMessage
 import com.mbusino.mqttexplorer.viewmodel.DetailViewModel
 import com.mbusino.mqttexplorer.viewmodel.TreeViewModel
@@ -84,9 +85,19 @@ fun DetailScreen(
         topBar = {
             TopAppBar(
                 title = {
-                    Text(
-                        text = topicPath
-                    )
+                    Row(verticalAlignment = Alignment.CenterVertically) {
+                        Image(
+                            bitmap = BitmapFactory.decodeResource(LocalContext.current.resources, com.mbusino.mqttexplorer.R.drawable.ic_logo).asImageBitmap(),
+                            contentDescription = "Logo",
+                            modifier = Modifier
+                                .height(40.dp)
+                                .padding(end = 8.dp),
+                            contentScale = ContentScale.Fit
+                        )
+                        Text(
+                            text = topicPath
+                        )
+                    }
                 },
                 navigationIcon = {
                     IconButton(onClick = onBack) {
@@ -205,7 +216,7 @@ private fun MessageCard(
                 verticalAlignment = Alignment.CenterVertically
             ) {
                 Text(
-                    text = message.formattedTime,
+                    text = message.formattedTime + if (previousMessage != null) "  ${formatDelta(message.timestamp, previousMessage.timestamp)}" else "",
                     style = MaterialTheme.typography.labelSmall,
                     fontFamily = FontFamily.Monospace,
                     color = MaterialTheme.colorScheme.primary
@@ -293,6 +304,17 @@ private fun MessageCard(
                 )
             }
         }
+    }
+}
+
+private fun formatDelta(currentMs: Long, previousMs: Long): String {
+    val diffMs = currentMs - previousMs
+    if (diffMs < 0) return ""
+    return when {
+        diffMs < 1000 -> "+${diffMs}ms"
+        diffMs < 60_000 -> "+${diffMs / 1000}s"
+        diffMs < 3600_000 -> "+${diffMs / 60_000}m"
+        else -> "+${diffMs / 3600_000}h"
     }
 }
 

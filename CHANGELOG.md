@@ -2,6 +2,11 @@
 
 All notable changes to MQTT Browser will be documented in this file.
 
+## [1.6] - 2026-08-02
+
+### Fixed
+- Natural sort for topic tree: "1_energy" now sorts before "19_energy"
+
 ## [1.5] - 2026-08-02
 
 ### Fixed

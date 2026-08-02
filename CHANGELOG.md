@@ -2,6 +2,13 @@
 
 All notable changes to MQTT Browser will be documented in this file.
 
+## [1.5] - 2026-08-02
+
+### Fixed
+- Expand/Collapse: text was never truncated (Compose maxLines unreliable)
+- Pre-truncate to 8 lines before rendering instead of relying on maxLines
+- needsExpand threshold raised from 400 to 600 chars (fewer false positives)
+
 ## [1.4] - 2026-08-01
 
 ### Added

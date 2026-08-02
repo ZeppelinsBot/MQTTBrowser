@@ -1,4 +1,9 @@
 # MQTT Browser
+
+<p align="center">
+  <img src="logo.png" width="128" alt="MQTT Browser Logo">
+</p>
+
 [![version](https://img.shields.io/badge/version-1.11-brightgreen.svg)](CHANGELOG.md)
 [![License: GPL v3](https://img.shields.io/badge/License-GPLv3-blue.svg)](LICENSE)
 

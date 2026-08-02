@@ -2,6 +2,11 @@
 
 All notable changes to MQTT Browser will be documented in this file.
 
+## [2.0] - 2026-08-02
+
+### Added
+- App logo as launcher icon (all 5 densities) and in toolbars
+
 ## [1.9] - 2026-08-02
 
 ### Fixed

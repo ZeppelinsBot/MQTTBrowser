@@ -2,7 +2,13 @@
 
 All notable changes to MQTT Browser will be documented in this file.
 
-## [1.10] - 2026-08-02
+## [1.11] - 2026-08-02
+
+### Added
+- Bigger logo (40dp) in all 3 toolbars
+- Delta time between messages (+12s, +2m, +1h)
+
+## [1.10] - 2026-08-02 - 2026-08-02
 
 ### Added
 - App logo as launcher icon (all 5 densities) and in toolbars

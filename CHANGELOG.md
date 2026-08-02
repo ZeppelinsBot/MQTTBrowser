@@ -2,6 +2,11 @@
 
 All notable changes to MQTT Browser will be documented in this file.
 
+## [1.9] - 2026-08-02
+
+### Fixed
+- Password field masked with dots in saved connections
+
 ## [1.8] - 2026-08-02
 
 ### Added

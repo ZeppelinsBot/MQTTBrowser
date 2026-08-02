@@ -51,6 +51,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.font.FontFamily
 import androidx.compose.ui.text.style.TextAlign
+import androidx.compose.ui.text.input.PasswordVisualTransformation
 import androidx.compose.ui.unit.dp
 import com.mbusino.mqttexplorer.BuildConfig
 import com.mbusino.mqttexplorer.data.ConnectionSettings
@@ -234,7 +235,8 @@ fun ConnectionScreen(
                     onValueChange = { viewModel.onPasswordChange(it) },
                     label = { Text("Password (optional)") },
                     modifier = Modifier.fillMaxWidth(),
-                    singleLine = true
+                    singleLine = true,
+                    visualTransformation = PasswordVisualTransformation()
                 )
             }
 

@@ -1,0 +1,41 @@
+Categories:
+  - Internet
+  - Connectivity
+License: GPL-3.0-only
+AuthorName: Matthias (Zeppelin500)
+WebSite: https://github.com/ZeppelinsBot/MQTTBrowser
+SourceCode: https://github.com/ZeppelinsBot/MQTTBrowser
+IssueTracker: https://github.com/ZeppelinsBot/MQTTBrowser/issues
+
+Name: MQTT Browser
+AutoName: MQTT Browser
+Summary: A native Android MQTT client with topic tree, message history and JSON diff
+Description: |-
+    A native Android MQTT client that provides a structured topic browser
+    with message history. Inspired by MQTT Explorer — reimplemented as
+    a native Android app.
+
+    * **Topic Tree** — Hierarchical, collapsible view of all MQTT topics
+    * **Message History** — Tap any topic to view the message log with timestamps
+    * **JSON Diff** — Changed values highlighted in green, unchanged in grey
+    * **Delta Time** — Time difference between consecutive messages
+    * **Image Rendering** — JPEG, PNG, GIF, BMP, WebP auto-detection
+    * **Search & Filter** — Filter the topic tree by name
+    * **Saved Connections** — Store broker settings locally
+    * **Live Updates** — New messages appear in real-time
+
+RepoType: git
+Repo: https://github.com/ZeppelinsBot/MQTTBrowser
+
+Builds:
+  - versionName: 1.11
+    versionCode: 1
+    commit: v1.11
+    subdir: app
+    gradle:
+      - yes
+
+AutoUpdateMode: Version
+UpdateCheckMode: Tags
+CurrentVersion: 1.11
+CurrentVersionCode: 1

@@ -1,5 +1,6 @@
 # MQTT Browser
 [![version](https://img.shields.io/badge/version-1.11-brightgreen.svg)](CHANGELOG.md)
+[![License: GPL v3](https://img.shields.io/badge/License-GPLv3-blue.svg)](LICENSE)
 
 A native Android MQTT client that provides a structured topic browser with message history.
 

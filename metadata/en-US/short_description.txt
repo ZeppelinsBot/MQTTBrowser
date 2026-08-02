@@ -1,1 +1,0 @@
-A native Android MQTT client with topic tree, message history and JSON diff

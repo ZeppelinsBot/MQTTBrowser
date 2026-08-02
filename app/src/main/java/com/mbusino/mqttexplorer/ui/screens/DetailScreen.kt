@@ -85,19 +85,11 @@ fun DetailScreen(
         topBar = {
             TopAppBar(
                 title = {
-                    Row(verticalAlignment = Alignment.CenterVertically) {
-                        Image(
-                            bitmap = BitmapFactory.decodeResource(LocalContext.current.resources, com.mbusino.mqttexplorer.R.drawable.ic_logo).asImageBitmap(),
-                            contentDescription = "Logo",
-                            modifier = Modifier
-                                .height(40.dp)
-                                .padding(end = 8.dp),
-                            contentScale = ContentScale.Fit
-                        )
-                        Text(
-                            text = topicPath
-                        )
-                    }
+                    Text(
+                        text = topicPath,
+                        maxLines = 2,
+                        overflow = TextOverflow.Ellipsis
+                    )
                 },
                 navigationIcon = {
                     IconButton(onClick = onBack) {
@@ -312,9 +304,9 @@ private fun formatDelta(currentMs: Long, previousMs: Long): String {
     if (diffMs < 0) return ""
     return when {
         diffMs < 1000 -> "+${diffMs}ms"
-        diffMs < 60_000 -> "+${diffMs / 1000}s"
-        diffMs < 3600_000 -> "+${diffMs / 60_000}m"
-        else -> "+${diffMs / 3600_000}h"
+        diffMs < 60_000 -> "+%.2fs".format(diffMs / 1000.0)
+        diffMs < 3600_000 -> "+%.2fm".format(diffMs / 60_000.0)
+        else -> "+%.2fh".format(diffMs / 3600_000.0)
     }
 }
 

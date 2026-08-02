@@ -100,8 +100,13 @@ class MqttManager private constructor() {
                     }
 
                     override fun messageArrived(topic: String, message: MqttMessage) {
-                        val payload = String(message.payload)
-                        handleIncomingMessage(topic, payload)
+                        val bytes = message.payload
+                        val payload = try {
+                            String(bytes, Charsets.UTF_8)
+                        } catch (_: Exception) {
+                            String(bytes)
+                        }
+                        handleIncomingMessage(topic, payload, bytes)
                     }
 
                     override fun deliveryComplete(token: IMqttDeliveryToken?) {
@@ -188,8 +193,8 @@ class MqttManager private constructor() {
         }
     }
 
-    private fun handleIncomingMessage(topic: String, payload: String) {
-        val msg = TopicMessage(payload)
+    private fun handleIncomingMessage(topic: String, payload: String, rawBytes: ByteArray? = null) {
+        val msg = TopicMessage(payload, rawPayload = rawBytes)
         val messages = topicMessages.getOrPut(topic) { mutableListOf() }
         messages.add(msg)
         if (messages.size > 500) {

@@ -48,6 +48,10 @@ import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.text.withStyle
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import android.graphics.BitmapFactory
+import androidx.compose.foundation.Image
+import androidx.compose.ui.graphics.asImageBitmap
+import androidx.compose.ui.layout.ContentScale
 import com.mbusino.mqttexplorer.data.TopicMessage
 import com.mbusino.mqttexplorer.viewmodel.DetailViewModel
 import com.mbusino.mqttexplorer.viewmodel.TreeViewModel
@@ -230,9 +234,29 @@ private fun MessageCard(
 
             Spacer(modifier = Modifier.height(4.dp))
 
-            // Payload content — always use pre-truncated text (no maxLines quirks)
-            if (isJson && diffEnabled && previousMessage != null && isJsonPayload(previousMessage.payload)) {
-                // JSON with diff highlighting (truncated inside buildJsonDiff)
+            // Payload content — image or text
+            if (message.isImage && message.rawPayload != null) {
+                // Render image from raw bytes
+                val bitmap = remember(message.rawPayload) {
+                    BitmapFactory.decodeByteArray(message.rawPayload, 0, message.rawPayload.size)?.asImageBitmap()
+                }
+                if (bitmap != null) {
+                    Image(
+                        bitmap = bitmap,
+                        contentDescription = "MQTT Image",
+                        modifier = Modifier
+                            .fillMaxWidth()
+                            .padding(top = 4.dp),
+                        contentScale = ContentScale.FillWidth
+                    )
+                } else {
+                    Text(
+                        text = "[Image — decode failed]",
+                        style = MaterialTheme.typography.bodyMedium,
+                        color = MaterialTheme.colorScheme.error
+                    )
+                }
+            } else if (isJson && diffEnabled && previousMessage != null && isJsonPayload(previousMessage.payload)) {
                 val diffText = buildJsonDiff(message.payload, previousMessage.payload, isExpanded, needsExpand)
                 Text(
                     text = diffText,
@@ -241,7 +265,6 @@ private fun MessageCard(
                     lineHeight = 18.sp
                 )
             } else if (isJson) {
-                // JSON without diff
                 Text(
                     text = truncatedPayload,
                     style = MaterialTheme.typography.bodyMedium,
@@ -249,7 +272,6 @@ private fun MessageCard(
                     lineHeight = 18.sp
                 )
             } else {
-                // Plain text
                 Text(
                     text = if (needsExpand && !isExpanded) {
                         message.payload.lines().take(8).joinToString("\n") + "\n…"

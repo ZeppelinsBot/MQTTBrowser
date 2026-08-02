@@ -2,6 +2,14 @@
 
 All notable changes to MQTT Browser will be documented in this file.
 
+## [1.7] - 2026-08-02
+
+### Added
+- Version number displayed on connection screen
+
+### Changed
+- APK releases named as MQTTBrowser-vX.Y.apk
+
 ## [1.6] - 2026-08-02
 
 ### Fixed

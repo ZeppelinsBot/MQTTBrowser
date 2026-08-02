@@ -52,6 +52,7 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.font.FontFamily
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
+import com.mbusino.mqttexplorer.BuildConfig
 import com.mbusino.mqttexplorer.data.ConnectionSettings
 import com.mbusino.mqttexplorer.mqtt.ConnectionState
 import com.mbusino.mqttexplorer.ui.theme.ConnectedGreen
@@ -109,6 +110,19 @@ fun ConnectionScreen(
                 .padding(16.dp),
             verticalArrangement = Arrangement.spacedBy(12.dp)
         ) {
+            // Version info
+            item {
+                Text(
+                    text = "MQTT Browser v${BuildConfig.VERSION_NAME}",
+                    style = MaterialTheme.typography.labelSmall,
+                    color = MaterialTheme.colorScheme.onSurfaceVariant,
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .padding(bottom = 4.dp),
+                    textAlign = TextAlign.Center
+                )
+            }
+
             // Connection status
             item {
                 Card(

@@ -2,6 +2,13 @@
 
 All notable changes to MQTT Browser will be documented in this file.
 
+## [1.15] - 2026-08-07
+
+### Security
+- Connection credentials now stored with EncryptedSharedPreferences (AES256, Android Keystore)
+- Automatic migration from old unencrypted SharedPreferences on first launch
+- Old unencrypted data deleted after migration
+
 ## [1.14] - 2026-08-07
 
 ### Added

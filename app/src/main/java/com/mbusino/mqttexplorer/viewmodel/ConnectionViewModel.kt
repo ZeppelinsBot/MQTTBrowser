@@ -3,6 +3,8 @@ package com.mbusino.mqttexplorer.viewmodel
 import android.app.Application
 import android.content.Context
 import androidx.lifecycle.AndroidViewModel
+import androidx.security.crypto.EncryptedSharedPreferences
+import androidx.security.crypto.MasterKeys
 import com.mbusino.mqttexplorer.data.ConnectionSettings
 import com.mbusino.mqttexplorer.data.ConnectionStorage
 import com.mbusino.mqttexplorer.mqtt.ConnectionState
@@ -15,7 +17,40 @@ class ConnectionViewModel(application: Application) : AndroidViewModel(applicati
 
     private val mqttManager = MqttManager.getInstance()
 
-    private val prefs = application.getSharedPreferences("mqtt_connections", Context.MODE_PRIVATE)
+    private val masterKeyAlias = MasterKeys.getOrCreate(MasterKeys.AES256_GCM_SPEC)
+
+    private val prefs = try {
+        EncryptedSharedPreferences.create(
+            "mqtt_connections_encrypted",
+            masterKeyAlias,
+            application,
+            EncryptedSharedPreferences.PrefKeyEncryptionScheme.AES256_SIV,
+            EncryptedSharedPreferences.PrefValueEncryptionScheme.AES256_GCM
+        )
+    } catch (e: Exception) {
+        // Fallback: corrupted encrypted prefs, delete and recreate
+        application.deleteSharedPreferences("mqtt_connections_encrypted")
+        EncryptedSharedPreferences.create(
+            "mqtt_connections_encrypted",
+            masterKeyAlias,
+            application,
+            EncryptedSharedPreferences.PrefKeyEncryptionScheme.AES256_SIV,
+            EncryptedSharedPreferences.PrefValueEncryptionScheme.AES256_GCM
+        )
+    }
+
+    init {
+        // Migrate old unencrypted SharedPreferences
+        val oldPrefs = application.getSharedPreferences("mqtt_connections", Context.MODE_PRIVATE)
+        if (oldPrefs.all.isNotEmpty()) {
+            val oldConnections = ConnectionStorage.getConnections(oldPrefs)
+            for (conn in oldConnections) {
+                ConnectionStorage.saveConnection(prefs, conn)
+            }
+            oldPrefs.edit().clear().apply()
+            application.deleteSharedPreferences("mqtt_connections")
+        }
+    }
 
     private val _savedConnections = MutableStateFlow(ConnectionStorage.getConnections(prefs))
     val savedConnections: StateFlow<List<ConnectionSettings>> = _savedConnections.asStateFlow()

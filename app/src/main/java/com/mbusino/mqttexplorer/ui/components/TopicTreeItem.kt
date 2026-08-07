@@ -10,6 +10,7 @@ import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.automirrored.filled.Send
 import androidx.compose.material.icons.filled.ChevronRight
 import androidx.compose.material.icons.filled.ExpandLess
 import androidx.compose.material.icons.filled.ExpandMore
@@ -35,6 +36,7 @@ fun TopicTreeItem(
     isExpanded: Boolean,
     onToggle: () -> Unit,
     onNavigate: () -> Unit,
+    onPublish: () -> Unit,
     modifier: Modifier = Modifier
 ) {
     val hasChildren = node.children.isNotEmpty()
@@ -129,9 +131,20 @@ fun TopicTreeItem(
                 }
             }
 
+            // Publish icon
+            Icon(
+                imageVector = Icons.AutoMirrored.Filled.Send,
+                contentDescription = "Publish to ${node.fullPath}",
+                tint = MaterialTheme.colorScheme.primary,
+                modifier = Modifier
+                    .size(20.dp)
+                    .clickable { onPublish() }
+            )
+
+            Spacer(modifier = Modifier.width(4.dp))
+
             // Navigate arrow for leaf nodes
             if (!hasChildren) {
-                Spacer(modifier = Modifier.width(4.dp))
                 Icon(
                     imageVector = Icons.Default.ChevronRight,
                     contentDescription = "View details",
@@ -141,7 +154,7 @@ fun TopicTreeItem(
                         .clickable { onNavigate() }
                 )
             } else {
-                Spacer(modifier = Modifier.width(24.dp))
+                Spacer(modifier = Modifier.width(20.dp))
             }
         }
     }

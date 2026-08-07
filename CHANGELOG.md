@@ -2,6 +2,11 @@
 
 All notable changes to MQTT Browser will be documented in this file.
 
+## [1.13] - 2026-08-07
+
+### Added
+- Publish icon (Send button) on every topic in the tree — pre-fills topic path, editable
+
 ## [1.12] - 2026-08-07
 
 ### Added

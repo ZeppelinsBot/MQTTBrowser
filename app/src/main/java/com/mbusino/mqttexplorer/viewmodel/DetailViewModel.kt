@@ -11,4 +11,8 @@ class DetailViewModel : ViewModel() {
     fun getMessagesForTopic(topicPath: String): List<TopicMessage> {
         return mqttManager.getMessagesForTopic(topicPath)
     }
+
+    fun publish(topic: String, payload: String, qos: Int = 1, retain: Boolean = false): Boolean {
+        return mqttManager.publish(topic, payload, qos, retain)
+    }
 }

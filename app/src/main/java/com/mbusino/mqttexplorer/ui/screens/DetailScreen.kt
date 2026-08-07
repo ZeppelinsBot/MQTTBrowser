@@ -16,9 +16,15 @@ import androidx.compose.foundation.lazy.itemsIndexed
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.filled.ArrowBack
+import androidx.compose.material.icons.automirrored.filled.Send
 import androidx.compose.material.icons.filled.ContentCopy
 import androidx.compose.material.icons.filled.ExpandLess
 import androidx.compose.material.icons.filled.ExpandMore
+import androidx.compose.material3.AlertDialog
+import androidx.compose.material3.OutlinedTextField
+import androidx.compose.material3.RadioButton
+import androidx.compose.material3.Switch
+import androidx.compose.material3.TextButton
 import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.ExperimentalMaterial3Api
@@ -54,6 +60,7 @@ import androidx.compose.ui.graphics.asImageBitmap
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.LocalContext
 import com.mbusino.mqttexplorer.data.TopicMessage
+import com.mbusino.mqttexplorer.ui.theme.ConnectedGreen
 import com.mbusino.mqttexplorer.viewmodel.DetailViewModel
 import com.mbusino.mqttexplorer.viewmodel.TreeViewModel
 import kotlinx.coroutines.delay
@@ -73,6 +80,12 @@ fun DetailScreen(
     var messages by remember { mutableStateOf(viewModel.getMessagesForTopic(topicPath)) }
     val expandedStates = remember { mutableStateMapOf<Int, Boolean>() }
     var diffEnabled by remember { mutableStateOf(true) }
+    var showPublishDialog by remember { mutableStateOf(false) }
+    var publishTopic by remember { mutableStateOf(topicPath) }
+    var publishPayload by remember { mutableStateOf("") }
+    var publishQos by remember { mutableStateOf(1) }
+    var publishRetain by remember { mutableStateOf(false) }
+    var publishResult by remember { mutableStateOf<String?>(null) }
 
     LaunchedEffect(topicPath) {
         while (true) {
@@ -97,6 +110,14 @@ fun DetailScreen(
                     }
                 },
                 actions = {
+                    IconButton(onClick = {
+                        publishTopic = topicPath
+                        publishPayload = ""
+                        publishResult = null
+                        showPublishDialog = true
+                    }) {
+                        Icon(Icons.AutoMirrored.Filled.Send, contentDescription = "Publish", tint = MaterialTheme.colorScheme.onPrimaryContainer)
+                    }
                     Text(
                         text = if (diffEnabled) "Diff ON" else "Diff OFF",
                         style = MaterialTheme.typography.labelMedium,
@@ -165,6 +186,90 @@ fun DetailScreen(
                 }
             }
         }
+    }
+
+    // Publish dialog
+    if (showPublishDialog) {
+        AlertDialog(
+            onDismissRequest = { showPublishDialog = false },
+            title = { Text("Publish Message") },
+            text = {
+                Column(verticalArrangement = Arrangement.spacedBy(8.dp)) {
+                    OutlinedTextField(
+                        value = publishTopic,
+                        onValueChange = { publishTopic = it },
+                        label = { Text("Topic") },
+                        singleLine = true,
+                        modifier = Modifier.fillMaxWidth()
+                    )
+                    OutlinedTextField(
+                        value = publishPayload,
+                        onValueChange = { publishPayload = it },
+                        label = { Text("Payload") },
+                        modifier = Modifier.fillMaxWidth().height(120.dp),
+                        maxLines = 6
+                    )
+                    Row(
+                        modifier = Modifier.fillMaxWidth(),
+                        horizontalArrangement = Arrangement.spacedBy(16.dp),
+                        verticalAlignment = Alignment.CenterVertically
+                    ) {
+                        Text("QoS:", style = MaterialTheme.typography.bodyMedium)
+                        listOf(0, 1, 2).forEach { qos ->
+                            Row(verticalAlignment = Alignment.CenterVertically) {
+                                RadioButton(
+                                    selected = publishQos == qos,
+                                    onClick = { publishQos = qos }
+                                )
+                                Text("$qos", style = MaterialTheme.typography.bodySmall)
+                            }
+                        }
+                    }
+                    Row(
+                        modifier = Modifier.fillMaxWidth(),
+                        verticalAlignment = Alignment.CenterVertically,
+                        horizontalArrangement = Arrangement.SpaceBetween
+                    ) {
+                        Text("Retain", style = MaterialTheme.typography.bodyMedium)
+                        Switch(
+                            checked = publishRetain,
+                            onCheckedChange = { publishRetain = it }
+                        )
+                    }
+                    publishResult?.let {
+                        Text(
+                            text = it,
+                            style = MaterialTheme.typography.bodySmall,
+                            color = if (it.startsWith("✓")) ConnectedGreen else MaterialTheme.colorScheme.error
+                        )
+                    }
+                }
+            },
+            confirmButton = {
+                TextButton(
+                    onClick = {
+                        if (publishTopic.isNotBlank()) {
+                            val ok = viewModel.publish(publishTopic, publishPayload, publishQos, publishRetain)
+                            publishResult = if (ok) "✓ Published (${publishPayload.toByteArray().size} bytes)" else "✗ Publish failed"
+                        }
+                    }
+                ) {
+                    Text("Publish")
+                }
+            },
+            dismissButton = {
+                TextButton(onClick = {
+                    showPublishDialog = false
+                    publishTopic = ""
+                    publishPayload = ""
+                    publishQos = 1
+                    publishRetain = false
+                    publishResult = null
+                }) {
+                    Text("Close")
+                }
+            }
+        )
     }
 }
 

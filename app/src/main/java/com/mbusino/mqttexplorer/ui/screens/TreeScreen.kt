@@ -219,11 +219,7 @@ fun TreeScreen(
                         depth = 0,
                         onToggle = { viewModel.toggleNode(it) },
                         onNavigate = { path, name -> onTopicClick(path, name) },
-                        onNavigateInternal = { path, name -> onTopicClick(path, name) },
-                        onPublish = { path ->
-                            publishTopic = path
-                            showPublishDialog = true
-                        }
+                        onNavigateInternal = { path, name -> onTopicClick(path, name) }
                     )
                 }
             }
@@ -368,8 +364,7 @@ private fun androidx.compose.foundation.lazy.LazyListScope.renderTreeNodes(
     depth: Int,
     onToggle: (String) -> Unit,
     onNavigate: (String, String) -> Unit,
-    onNavigateInternal: (String, String) -> Unit,
-    onPublish: (String) -> Unit
+    onNavigateInternal: (String, String) -> Unit
 ) {
     for (node in nodes) {
         val isExpanded = expandedNodes.contains(node.fullPath) || node.fullPath.isEmpty()
@@ -379,8 +374,7 @@ private fun androidx.compose.foundation.lazy.LazyListScope.renderTreeNodes(
                 depth = depth,
                 isExpanded = isExpanded,
                 onToggle = { onToggle(node.fullPath) },
-                onNavigate = { onNavigate(node.fullPath, node.name) },
-                onPublish = { onPublish(node.fullPath) }
+                onNavigate = { onNavigate(node.fullPath, node.name) }
             )
         }
         if (isExpanded && node.children.isNotEmpty()) {
@@ -390,8 +384,7 @@ private fun androidx.compose.foundation.lazy.LazyListScope.renderTreeNodes(
                 depth = depth + 1,
                 onToggle = onToggle,
                 onNavigate = onNavigate,
-                onNavigateInternal = onNavigateInternal,
-                onPublish = onPublish
+                onNavigateInternal = onNavigateInternal
             )
         }
     }

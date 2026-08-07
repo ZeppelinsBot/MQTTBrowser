@@ -2,6 +2,12 @@
 
 All notable changes to MQTT Browser will be documented in this file.
 
+## [1.14] - 2026-08-07
+
+### Added
+- Publish icon in DetailScreen TopAppBar — pre-fills topic path, editable
+- Removed per-tree-node publish icons (too cluttered)
+
 ## [1.13] - 2026-08-07
 
 ### Added

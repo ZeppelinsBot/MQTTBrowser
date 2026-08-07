@@ -70,4 +70,8 @@ class TreeViewModel : ViewModel() {
     fun unsubscribe(topic: String) {
         mqttManager.unsubscribe(topic)
     }
+
+    fun publish(topic: String, payload: String, qos: Int = 1, retain: Boolean = false): Boolean {
+        return mqttManager.publish(topic, payload, qos, retain)
+    }
 }

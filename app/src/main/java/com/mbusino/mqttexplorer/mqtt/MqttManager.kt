@@ -193,6 +193,26 @@ class MqttManager private constructor() {
         }
     }
 
+    fun publish(topic: String, payload: String, qos: Int = 1, retain: Boolean = false): Boolean {
+        return try {
+            val message = MqttMessage(payload.toByteArray()).apply {
+                this.qos = qos
+                this.isRetained = retain
+            }
+            client?.publish(topic, message)
+            Log.i(TAG, "Published to $topic (${payload.toByteArray().size} bytes)")
+            true
+        } catch (e: MqttException) {
+            Log.e(TAG, "Publish failed for $topic", e)
+            _errorMessage.value = "Publish failed: ${e.message}"
+            false
+        } catch (e: Exception) {
+            Log.e(TAG, "Unexpected publish error", e)
+            _errorMessage.value = "Publish error: ${e.message}"
+            false
+        }
+    }
+
     private fun handleIncomingMessage(topic: String, payload: String, rawBytes: ByteArray? = null) {
         val msg = TopicMessage(payload, rawPayload = rawBytes)
         val messages = topicMessages.getOrPut(topic) { mutableListOf() }

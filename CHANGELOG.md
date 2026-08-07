@@ -2,6 +2,17 @@
 
 All notable changes to MQTT Browser will be documented in this file.
 
+## [1.12] - 2026-08-07
+
+### Added
+- MQTT Publish: send messages to any topic with QoS (0/1/2) and retain flag
+- Publish dialog via new Send-FAB (second FAB button)
+
+### Fixed
+- TopAppBar action icons now clearly visible in dark mode (explicit onPrimaryContainer tint)
+- Search icon tint improved for better contrast
+- Deprecated ArrowBack/Send icons replaced with AutoMirrored variants
+
 ## [1.11] - 2026-08-02
 
 ### Added

@@ -19,8 +19,10 @@ import androidx.compose.material.icons.filled.Add
 import androidx.compose.material.icons.filled.Close
 import androidx.compose.material.icons.filled.Refresh
 import androidx.compose.material.icons.filled.Search
+import androidx.compose.material.icons.automirrored.filled.Send
 import androidx.compose.material.icons.filled.UnfoldLess
 import androidx.compose.material.icons.filled.UnfoldMore
+import androidx.compose.material3.Switch
 import androidx.compose.material3.AlertDialog
 import androidx.compose.material3.Button
 import androidx.compose.material3.ExperimentalMaterial3Api
@@ -47,6 +49,7 @@ import com.mbusino.mqttexplorer.data.TopicNode
 import com.mbusino.mqttexplorer.mqtt.ConnectionState
 import com.mbusino.mqttexplorer.ui.components.TopicTreeItem
 import com.mbusino.mqttexplorer.viewmodel.ConnectionViewModel
+import com.mbusino.mqttexplorer.ui.theme.ConnectedGreen
 import com.mbusino.mqttexplorer.viewmodel.TreeViewModel
 
 @OptIn(ExperimentalMaterial3Api::class)
@@ -63,6 +66,12 @@ fun TreeScreen(
     val connectionState by connectionViewModel.connectionState.collectAsState()
     var showSubscribeDialog by remember { mutableStateOf(false) }
     var subscribeTopic by remember { mutableStateOf("") }
+    var showPublishDialog by remember { mutableStateOf(false) }
+    var publishTopic by remember { mutableStateOf("") }
+    var publishPayload by remember { mutableStateOf("") }
+    var publishQos by remember { mutableStateOf(1) }
+    var publishRetain by remember { mutableStateOf(false) }
+    var publishResult by remember { mutableStateOf<String?>(null) }
 
     Scaffold(
         topBar = {
@@ -96,27 +105,38 @@ fun TreeScreen(
                 actions = {
                     if (connectionState == ConnectionState.CONNECTED) {
                         IconButton(onClick = { viewModel.expandAll(topicTree) }) {
-                            Icon(Icons.Default.UnfoldMore, contentDescription = "Expand All")
+                            Icon(Icons.Default.UnfoldMore, contentDescription = "Expand All", tint = MaterialTheme.colorScheme.onPrimaryContainer)
                         }
                         IconButton(onClick = { viewModel.collapseAll() }) {
-                            Icon(Icons.Default.UnfoldLess, contentDescription = "Collapse All")
+                            Icon(Icons.Default.UnfoldLess, contentDescription = "Collapse All", tint = MaterialTheme.colorScheme.onPrimaryContainer)
                         }
                     }
                     if (connectionState == ConnectionState.DISCONNECTED || connectionState == ConnectionState.ERROR) {
                         IconButton(onClick = { connectionViewModel.reconnect() }) {
-                            Icon(Icons.Default.Refresh, contentDescription = "Reconnect")
+                            Icon(Icons.Default.Refresh, contentDescription = "Reconnect", tint = MaterialTheme.colorScheme.onPrimaryContainer)
                         }
                     }
                     IconButton(onClick = onDisconnect) {
-                        Icon(Icons.Default.Close, contentDescription = "Disconnect")
+                        Icon(Icons.Default.Close, contentDescription = "Disconnect", tint = MaterialTheme.colorScheme.onPrimaryContainer)
                     }
                 }
             )
         },
         floatingActionButton = {
             if (connectionState == ConnectionState.CONNECTED) {
-                FloatingActionButton(onClick = { showSubscribeDialog = true }) {
-                    Icon(Icons.Default.Add, contentDescription = "Subscribe to topic")
+                Column(
+                    horizontalAlignment = Alignment.End,
+                    verticalArrangement = Arrangement.spacedBy(12.dp)
+                ) {
+                    FloatingActionButton(
+                        onClick = { showPublishDialog = true },
+                        containerColor = MaterialTheme.colorScheme.secondaryContainer
+                    ) {
+                        Icon(Icons.AutoMirrored.Filled.Send, contentDescription = "Publish message")
+                    }
+                    FloatingActionButton(onClick = { showSubscribeDialog = true }) {
+                        Icon(Icons.Default.Add, contentDescription = "Subscribe to topic")
+                    }
                 }
             }
         }
@@ -153,7 +173,7 @@ fun TreeScreen(
                     .padding(horizontal = 16.dp, vertical = 8.dp),
                 singleLine = true,
                 leadingIcon = {
-                    Icon(Icons.Default.Search, contentDescription = "Search")
+                    Icon(Icons.Default.Search, contentDescription = "Search", tint = MaterialTheme.colorScheme.onSurfaceVariant)
                 },
                 trailingIcon = {
                     if (searchQuery.isNotBlank()) {
@@ -240,6 +260,92 @@ fun TreeScreen(
                     subscribeTopic = ""
                 }) {
                     Text("Cancel")
+                }
+            }
+        )
+    }
+
+    // Publish dialog
+    if (showPublishDialog) {
+        AlertDialog(
+            onDismissRequest = { showPublishDialog = false },
+            title = { Text("Publish Message") },
+            text = {
+                Column(verticalArrangement = Arrangement.spacedBy(8.dp)) {
+                    OutlinedTextField(
+                        value = publishTopic,
+                        onValueChange = { publishTopic = it },
+                        label = { Text("Topic") },
+                        placeholder = { Text("e.g. MBusino/test") },
+                        singleLine = true,
+                        modifier = Modifier.fillMaxWidth()
+                    )
+                    OutlinedTextField(
+                        value = publishPayload,
+                        onValueChange = { publishPayload = it },
+                        label = { Text("Payload") },
+                        placeholder = { Text("Message content") },
+                        modifier = Modifier.fillMaxWidth().height(120.dp),
+                        maxLines = 6
+                    )
+                    Row(
+                        modifier = Modifier.fillMaxWidth(),
+                        horizontalArrangement = Arrangement.spacedBy(16.dp),
+                        verticalAlignment = Alignment.CenterVertically
+                    ) {
+                        Text("QoS:", style = MaterialTheme.typography.bodyMedium)
+                        listOf(0, 1, 2).forEach { qos ->
+                            Row(verticalAlignment = Alignment.CenterVertically) {
+                                androidx.compose.material3.RadioButton(
+                                    selected = publishQos == qos,
+                                    onClick = { publishQos = qos }
+                                )
+                                Text("$qos", style = MaterialTheme.typography.bodySmall)
+                            }
+                        }
+                    }
+                    Row(
+                        modifier = Modifier.fillMaxWidth(),
+                        verticalAlignment = Alignment.CenterVertically,
+                        horizontalArrangement = Arrangement.SpaceBetween
+                    ) {
+                        Text("Retain", style = MaterialTheme.typography.bodyMedium)
+                        Switch(
+                            checked = publishRetain,
+                            onCheckedChange = { publishRetain = it }
+                        )
+                    }
+                    publishResult?.let {
+                        Text(
+                            text = it,
+                            style = MaterialTheme.typography.bodySmall,
+                            color = if (it.startsWith("✓")) ConnectedGreen else MaterialTheme.colorScheme.error
+                        )
+                    }
+                }
+            },
+            confirmButton = {
+                TextButton(
+                    onClick = {
+                        if (publishTopic.isNotBlank()) {
+                            val ok = viewModel.publish(publishTopic, publishPayload, publishQos, publishRetain)
+                            publishResult = if (ok) "✓ Published (${publishPayload.toByteArray().size} bytes)" else "✗ Publish failed"
+                        }
+                    }
+                ) {
+                    Text("Publish")
+                }
+            },
+            dismissButton = {
+                TextButton(onClick = {
+                    showPublishDialog = false
+                    publishTopic = ""
+                    publishPayload = ""
+                    publishQos = 1
+                    publishRetain = false
+                    publishResult = null
+                }) {
+                    Text("Close")
                 }
             }
         )

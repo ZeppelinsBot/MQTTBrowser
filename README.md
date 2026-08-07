@@ -15,14 +15,20 @@ Inspired by [MQTT Explorer](https://github.com/thomasnordquist/MQTT-Explorer) by
 
 - **Topic Tree** — Hierarchical, collapsible view of all MQTT topics (auto-subscribes to `#`)
 - **Branch Statistics** — Parent nodes show record count and total message count across child topics
-- **Message History** — Tap any topic to view the message log with timestamps (`HH:mm:ss.SSS`)
+- **Message History** — Tap any topic to view the message log with timestamps and delta time between messages
 - **Live Updates** — New messages appear in real-time
+- **JSON Pretty-Print** — JSON payloads formatted with 2-space indentation
+- **JSON Diff Mode** — Changed values highlighted in green, unchanged dimmed; toggleable
+- **Image Rendering** — JPEG, PNG, GIF, BMP, WebP auto-detected from raw MQTT bytes
+- **Expand / Collapse** — Long messages truncated to 8 lines with tap-to-expand
 - **Search & Filter** — Filter the topic tree by name
+- **MQTT Publish** — Send messages to any topic with QoS (0/1/2) and retain flag; topic pre-filled from detail view
 - **Subscribe / Unsubscribe** — Add wildcard subscriptions (e.g. `MBusino/#`) via FAB
-- **Connection Manager** — Save and reuse broker connections (stored in SharedPreferences)
+- **Connection Manager** — Save and reuse broker connections (encrypted with AES256 via Android Keystore)
 - **Auto-Reconnect** — Reconnects automatically when the app returns from background
 - **Manual Reconnect** — Reconnect button when connection is lost
 - **Dark Mode** — Follows system theme
+- **Natural Sort** — "1_energy" sorts before "19_energy"
 
 | Connection | Topic Tree | Message Detail |
 |:---:|:---:|:---:|
@@ -89,7 +95,7 @@ This project was **inspired by** [MQTT Explorer](https://github.com/thomasnordqu
 | Topic tree model (`TopicNode`) | Written from scratch |
 | MQTT client wrapper (`MqttManager`) | Written from scratch (Eclipse Paho) |
 | All UI screens (Compose) | Written from scratch (Material 3) |
-| Connection storage | Written from scratch (SharedPreferences + Gson) |
+| Connection storage | Written from scratch (EncryptedSharedPreferences + Gson, AES256 via Android Keystore) |
 | Branch statistics | New feature (not in original MQTT Explorer) |
 | Auto-reconnect | New feature (not in original MQTT Explorer) |
 

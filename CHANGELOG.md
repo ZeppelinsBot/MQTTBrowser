@@ -2,6 +2,11 @@
 
 All notable changes to MQTT Browser will be documented in this file.
 
+## [1.16] - 2026-08-07
+
+### Fixed
+- Migration flag: old SharedPreferences check skipped after first successful migration (performance)
+
 ## [1.15] - 2026-08-07
 
 ### Security

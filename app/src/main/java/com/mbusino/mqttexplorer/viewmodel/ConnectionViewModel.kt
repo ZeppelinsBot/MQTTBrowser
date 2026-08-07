@@ -40,15 +40,18 @@ class ConnectionViewModel(application: Application) : AndroidViewModel(applicati
     }
 
     init {
-        // Migrate old unencrypted SharedPreferences
-        val oldPrefs = application.getSharedPreferences("mqtt_connections", Context.MODE_PRIVATE)
-        if (oldPrefs.all.isNotEmpty()) {
-            val oldConnections = ConnectionStorage.getConnections(oldPrefs)
-            for (conn in oldConnections) {
-                ConnectionStorage.saveConnection(prefs, conn)
+        // Migrate old unencrypted SharedPreferences (only once)
+        if (!prefs.contains("migration_done")) {
+            val oldPrefs = application.getSharedPreferences("mqtt_connections", Context.MODE_PRIVATE)
+            if (oldPrefs.all.isNotEmpty()) {
+                val oldConnections = ConnectionStorage.getConnections(oldPrefs)
+                for (conn in oldConnections) {
+                    ConnectionStorage.saveConnection(prefs, conn)
+                }
+                oldPrefs.edit().clear().apply()
+                application.deleteSharedPreferences("mqtt_connections")
             }
-            oldPrefs.edit().clear().apply()
-            application.deleteSharedPreferences("mqtt_connections")
+            prefs.edit().putBoolean("migration_done", true).apply()
         }
     }
 

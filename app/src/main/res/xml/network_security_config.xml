@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  MQTT Browser connects to arbitrary user-entered brokers, including
+  unencrypted mqtt:// (tcp:// broker:1883) connections, so a domain-specific
+  config is impossible. The base-config below makes cleartext traffic
+  explicitly permitted for the whole app (robust for targetSdk 36+) while
+  keeping the default system trust anchors for TLS (ssl://) connections.
+-->
+<network-security-config>
+    <base-config cleartextTrafficPermitted="true">
+        <trust-anchors>
+            <certificates src="system" />
+        </trust-anchors>
+    </base-config>
+</network-security-config>

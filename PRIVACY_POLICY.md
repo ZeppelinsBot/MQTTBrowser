@@ -63,7 +63,7 @@ effective date above will be updated when changes are made.
 
 ## Contact
 
-Questions about this privacy policy: matthias@kleber.cloud
+Questions about this privacy policy: mbusinolib@gmail.com
 
 Also available via the project's GitHub repository:
 <https://github.com/ZeppelinsBot/MQTTBrowser>

@@ -50,7 +50,7 @@ your home server, a broker on your local network, or an industrial MQTT
 gateway. Nothing else.
 
 Category suggestion: **Tools**
-Contact email: matthias@kleber.cloud
+Contact email: mbusinolib@gmail.com
 
 ---
 *Draft — every `REPLACE`/`TODO` needs the maintainer's decision before Play submission.*

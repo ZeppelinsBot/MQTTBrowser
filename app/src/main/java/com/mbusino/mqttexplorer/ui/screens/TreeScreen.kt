@@ -39,7 +39,7 @@ import androidx.compose.material3.TextButton
 import androidx.compose.material3.TopAppBar
 import androidx.compose.material3.TopAppBarDefaults
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.collectAsState
+import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
@@ -63,12 +63,12 @@ fun TreeScreen(
     onTopicClick: (String, String) -> Unit,
     onDisconnect: () -> Unit
 ) {
-    val topicTree by viewModel.topicTree.collectAsState()
-    val expandedNodes by viewModel.expandedNodes.collectAsState()
-    val searchQuery by viewModel.searchQuery.collectAsState()
-    val connectionState by connectionViewModel.connectionState.collectAsState()
-    val subscribeMode by viewModel.subscribeMode.collectAsState()
-    val reconnectDecision by viewModel.reconnectDecision.collectAsState()
+    val topicTree by viewModel.topicTree.collectAsStateWithLifecycle()
+    val expandedNodes by viewModel.expandedNodes.collectAsStateWithLifecycle()
+    val searchQuery by viewModel.searchQuery.collectAsStateWithLifecycle()
+    val connectionState by connectionViewModel.connectionState.collectAsStateWithLifecycle()
+    val subscribeMode by viewModel.subscribeMode.collectAsStateWithLifecycle()
+    val reconnectDecision by viewModel.reconnectDecision.collectAsStateWithLifecycle()
     var showSubscribeDialog by remember { mutableStateOf(false) }
     var subscribeTopic by remember { mutableStateOf("") }
     var showPublishDialog by remember { mutableStateOf(false) }

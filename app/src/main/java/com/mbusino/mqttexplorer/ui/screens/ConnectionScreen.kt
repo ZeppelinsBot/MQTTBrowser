@@ -53,7 +53,7 @@ import androidx.compose.material3.TopAppBar
 import androidx.compose.material3.TopAppBarDefaults
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
-import androidx.compose.runtime.collectAsState
+import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
@@ -81,17 +81,17 @@ fun ConnectionScreen(
     viewModel: ConnectionViewModel,
     onConnected: () -> Unit
 ) {
-    val connectionState by viewModel.connectionState.collectAsState()
-    val errorMessage by viewModel.errorMessage.collectAsState()
-    val savedConnections by viewModel.savedConnections.collectAsState()
-    val brokerUrl by viewModel.brokerUrl.collectAsState()
-    val port by viewModel.port.collectAsState()
-    val username by viewModel.username.collectAsState()
-    val password by viewModel.password.collectAsState()
-    val connectionName by viewModel.connectionName.collectAsState()
-    val tls by viewModel.tls.collectAsState()
-    val trustAll by viewModel.trustAll.collectAsState()
-    val caCertUri by viewModel.caCertUri.collectAsState()
+    val connectionState by viewModel.connectionState.collectAsStateWithLifecycle()
+    val errorMessage by viewModel.errorMessage.collectAsStateWithLifecycle()
+    val savedConnections by viewModel.savedConnections.collectAsStateWithLifecycle()
+    val brokerUrl by viewModel.brokerUrl.collectAsStateWithLifecycle()
+    val port by viewModel.port.collectAsStateWithLifecycle()
+    val username by viewModel.username.collectAsStateWithLifecycle()
+    val password by viewModel.password.collectAsStateWithLifecycle()
+    val connectionName by viewModel.connectionName.collectAsStateWithLifecycle()
+    val tls by viewModel.tls.collectAsStateWithLifecycle()
+    val trustAll by viewModel.trustAll.collectAsStateWithLifecycle()
+    val caCertUri by viewModel.caCertUri.collectAsStateWithLifecycle()
 
     val context = LocalContext.current
     val snackbarHostState = remember { SnackbarHostState() }

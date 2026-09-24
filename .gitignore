@@ -13,4 +13,8 @@
 *.aab
 *.jks
 *.keystore
+
+# Play Store build hygiene (defensive; *.jks/*.keystore already covered above)
+*.idsig
+keystore.properties
 gradle/wrapper/gradle-wrapper.jar

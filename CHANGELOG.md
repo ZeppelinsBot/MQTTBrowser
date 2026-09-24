@@ -5,6 +5,7 @@ All notable changes to MQTT Browser will be documented in this file.
 ## [1.21] - 2026-09-23
 
 ### Added
+- Launcher icon fixed: adaptive icon now shows the actual full logo (old never-shown August concept vector replaced); versionCode 23
 - Path-based subscribe mode: subscribe-FAB toggles between `+` (wildcard `#`) and `#` (single path `<path>/#`)
 - Subscribe dialog with wildcard-deactivation warning when entering a path manually via FAB
 - Long-press on any tree node (leaf and parent): menu with "Subscribe to this path only" and "Delete retained" (nodes without retained message open the subscribe confirmation directly)

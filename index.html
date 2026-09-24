@@ -1,0 +1,22 @@
+<!DOCTYPE html>
+<html lang="en"><head><meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Privacy Policy — MQTT Browser</title>
+<style>body{font-family:system-ui,-apple-system,Segoe UI,Roboto,sans-serif;max-width:760px;margin:2rem auto;padding:0 1rem;line-height:1.6;color:#1a1a1a}h1{color:#0d1b2a}h2{color:#1982cc;border-bottom:1px solid #eee;padding-bottom:.2rem}code{background:#f2f4f7;padding:.1rem .3rem;border-radius:4px}a{color:#1982cc}.foot{margin-top:2.5rem;font-size:.85rem;color:#777}</style>
+</head><body>
+<h1>Privacy Policy — MQTT Browser</h1>
+<p><strong>Effective date:</strong> 24.09.2026</p>
+<h2>Overview</h2><p>MQTT Browser ("the app") is a standalone Android MQTT client. This policy explains what the app does — and, more importantly, what it does <strong>not</strong> do.</p>
+<h2>No account, no sign-up</h2><p>The app does not require an account, registration, or sign-in. There is no server operated by the developer that you connect an account to.</p>
+<h2>No data collection by the developer</h2><p>The app does <strong>not</strong> collect, transmit, store, or share any personal data with the developer. Specifically:</p>
+<ul><li><strong>No analytics.</strong> The app contains no analytics SDKs.</li><li><strong>No advertising.</strong> The app contains no ad SDKs.</li><li><strong>No tracking.</strong> The app does not build profiles of you or your activity.</li><li><strong>No developer-operated servers.</strong> The app never contacts any server owned or controlled by the developer.</li></ul>
+<h2>Connections go only to brokers you configure</h2><p>The app connects <strong>directly and only</strong> to MQTT brokers that <strong>you</strong> enter and configure (host, port, credentials). MQTT messages — including topic names, payloads, and credentials you enter — travel between your device and the broker you chose:</p>
+<ul><li>The developer never receives, sees, stores, or has access to this data.</li><li>If you connect to an unencrypted broker (<code>tcp://</code>, typically port 1883), that traffic is not encrypted — this is determined by your broker configuration, not by the app. For encrypted connections, enable TLS (<code>ssl://</code>).</li></ul>
+<h2>Local storage</h2><p>The app stores its settings — including broker addresses, connection profiles, credentials, and certificates you import — <strong>locally on your device</strong> (Android app-private storage). This data is removed when you clear the app's data or uninstall the app. It is never transmitted anywhere except to the broker you configured, when you connect.</p>
+<h2>Permissions</h2><ul><li><code>INTERNET</code> / <code>ACCESS_NETWORK_STATE</code>: required to connect to MQTT brokers and detect network status.</li><li><code>WAKE_LOCK</code>: keeps the device awake during active connections so messages are not dropped while the screen is off.</li></ul>
+<h2>Children's privacy</h2><p>The app is a general-purpose developer/technical tool and does not target children.</p>
+<h2>Changes to this policy</h2><p>Any changes will be published in the repository. The effective date above will be updated when changes are made.</p>
+<h2>Contact</h2><p>Questions about this privacy policy: <a href="mailto:matthias@kleber.cloud">matthias@kleber.cloud</a></p>
+<p>Project repository: <a href="https://github.com/ZeppelinsBot/MQTTBrowser">github.com/ZeppelinsBot/MQTTBrowser</a></p>
+<p class="foot">MQTT Browser — standalone Android MQTT client. No accounts, no cloud, no tracking.</p>
+</body></html>

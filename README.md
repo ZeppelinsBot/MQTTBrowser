@@ -40,9 +40,9 @@ Inspired by [MQTT Explorer](https://github.com/thomasnordquist/MQTT-Explorer) by
 - **Retained Badge** — 📌 shown next to retained messages in tree and detail view
 - **Delete Retained** — Long-press a topic in the tree to delete its retained message (sends empty retained publish)
 
-| Connection | Topic Tree | Message Detail |
-|:---:|:---:|:---:|
-| ![Connection](screenshots/01_connection.jpg) | ![Topic Tree](screenshots/02_topic_tree.jpg) | ![Detail](screenshots/03_detail_view.jpg) |
+| Connection | Topic Tree | Long-Press Menu | Path Subscribe |
+|:---:|:---:|:---:|:---:|
+| <img src="screenshots/01_connection.jpg" width="225" alt="Connection screen"> | <img src="screenshots/02_topic_tree.jpg" width="225" alt="Topic tree with message counts"> | <img src="screenshots/03_path_subscribe_menu.jpg" width="225" alt="Long-press action menu"> | <img src="screenshots/04_subscribe_path_dialog.jpg" width="225" alt="Path subscribe confirmation"> |
 
 ## Requirements
 

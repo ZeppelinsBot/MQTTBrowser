@@ -1,6 +1,6 @@
 # Privacy Policy — MQTT Browser
 
-**Effective date:** `REPLACE: effective date`
+**Effective date:** 24.09.2026
 
 ## Overview
 
@@ -63,7 +63,7 @@ effective date above will be updated when changes are made.
 
 ## Contact
 
-Questions about this privacy policy: `REPLACE: contact email`
+Questions about this privacy policy: matthias@kleber.cloud
 
 Also available via the project's GitHub repository:
 <https://github.com/ZeppelinsBot/MQTTBrowser>

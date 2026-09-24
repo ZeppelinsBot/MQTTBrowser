@@ -11,8 +11,8 @@ android {
         applicationId = "com.mbusino.mqttbrowser"
         minSdk = 26
         targetSdk = 36
-        // Play Store: strictly increasing per upload (22 = v1.21 launcher-icon iteration)
-        versionCode = 22
+        // Play Store: strictly increasing per upload (23 = v1.21 launcher icon = real logo)
+        versionCode = 23
         versionName = "1.21"
     }
 

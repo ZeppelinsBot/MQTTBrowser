@@ -2,7 +2,7 @@ RepoType: git
 Repo: https://github.com/ZeppelinsBot/MQTTBrowser.git
 
 Name: MQTT Browser
-Summary: Explore MQTT brokers: topic tree, live messages, TLS, retained handling.
+Summary: "Explore MQTT brokers: topic tree, live messages, TLS, retained handling."
 Description: |
   MQTT Browser is a fast, clean MQTT client and topic explorer for Android.
   Connect to any MQTT broker and explore its topics like a file tree — built

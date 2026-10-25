@@ -38,7 +38,7 @@ I wanted a desktop-"MQTT Explorer"-style topic **browser** on the phone for home
 
 * [x] Please read the [guide](https://gitlab.com/fdroid/fdroiddata/-/blob/master/CONTRIBUTING.md) first if this is your first contribution.
 * [x] Please make sure your metadata follows the best practice in [our templates](https://gitlab.com/fdroid/fdroiddata/tree/master/templates). — Matched against `templates/general.yml` and `templates/build-gradle.yml`; no comments, LF only.
-* [x] Please read the [Build Metadata Reference](https://f-droid.org/docs/Build_Metadata_Reference/) and make sure your metadata is valid. — CI job `YAML 1.2` passed on this file.
+* [x] Please read the [Build Metadata Reference](https://f-droid.org/docs/Build_Metadata_Reference/) and make sure your metadata is valid. — Validated locally against your `schemas/metadata.json` (`check-jsonschema`) and with `fdroid lint`: clean after quoting an unquoted `: ` inside the `Summary` value (found by replicating your CI jobs locally, see Pipeline).
 * [x] Please read the [Quick Start Guide](https://f-droid.org/en/docs/Submitting_to_F-Droid_Quick_Start_Guide/).
 
 ### Merge Request Setup
@@ -67,8 +67,10 @@ I wanted a desktop-"MQTT Explorer"-style topic **browser** on the phone for home
 
 ### Pipeline
 
-* [ ] All pipelines should pass. — The first MR pipeline failed **before any job was created**: GitLab.com reported `failure_reason: "The pipeline failed due to the user not being verified."` (fresh account without completed human verification). The account is verified since 10:29 UTC today; a manual run of the identical jobs passed (`YAML 1.2`, `weblate merge conflict`, `strip EXIF`). A fresh MR pipeline runs on reopen — I'll make sure it is green.
+* [ ] All pipelines should pass. — Run 1 failed before any job was created (`failure_reason: "The pipeline failed due to the user not being verified."` — fresh account; human verification completed the same day). Run 2 executed the real jobs and `fdroid lint` / `schema validation` correctly caught an **invalid YAML scalar**: the unquoted `Summary` value contained `: ` (line 5). **Fixed in this revision** (value quoted); both checks now pass locally against `schemas/metadata.json` and with `fdroid lint`. If any job still fails after the rerun, I will fix it immediately.
 * [x] All warnings and errors in the Reports tab should be fixed or explained.
 * [x] F-Droid CI runners are under GitLab's FOSS program … — No payment/phone verification required anymore (account verified).
 
+```text
 /label ~"New App"
+```

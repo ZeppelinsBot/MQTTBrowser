@@ -18,3 +18,11 @@
 *.idsig
 keystore.properties
 gradle/wrapper/gradle-wrapper.jar
+
+# --- Source-tree hygiene (owner decision 2026-10-25) ---
+# Prebuilt APK / APK-ZIP / idsig artifacts are DELIBERATELY NOT committed anymore:
+# distribution runs exclusively via GitHub release assets (+ the LAN mirror).
+# F-Droid rejects prebuilt binaries in the source tree, IzzyOnDroid takes the APKs
+# from the releases. Do NOT `git add -f` them back — they stay untracked here.
+*.apk
+*.apk.zip

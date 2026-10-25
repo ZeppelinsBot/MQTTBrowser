@@ -8,7 +8,6 @@ SourceCode: https://github.com/ZeppelinsBot/MQTTBrowser
 IssueTracker: https://github.com/ZeppelinsBot/MQTTBrowser/issues
 
 Name: MQTT Browser
-Summary: Explore MQTT brokers — topic tree, live messages, TLS and retained handling
 Description: |
   MQTT Browser is a fast, clean MQTT client and topic explorer for Android.
   Connect to any MQTT broker and explore its topics like a file tree — built

@@ -2,6 +2,15 @@
 
 All notable changes to MQTT Browser will be documented in this file.
 
+## [1.24] - 2026-10-25
+
+### Changed
+- Store metadata added: `fastlane/metadata/android/en-US/` (title, short/full description, changelog, icon, feature graphic, 4 screenshots) — mandatory for IzzyOnDroid, auto-imported by F-Droid
+- fdroiddata metadata draft for the official F-Droid submission (`docs/store/fdroid/com.mbusino.mqttbrowser.yml`)
+- Dependency metadata stripped from APK/AAB (`dependenciesInfo` off) so F-Droid can compare its from-source rebuild with our artifacts
+- Prebuilt APK artifacts removed from the source tree (distribution via GitHub release assets only); `*.apk` now gitignored
+- No functional changes over v1.23
+
 ## [1.23] - 2026-10-25
 
 ### Fixed

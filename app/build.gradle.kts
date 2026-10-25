@@ -11,9 +11,17 @@ android {
         applicationId = "com.mbusino.mqttbrowser"
         minSdk = 26
         targetSdk = 36
-        // Play Store: strictly increasing per upload (25 = v1.23 solid status bar / no fullscreen)
-        versionCode = 25
-        versionName = "1.23"
+        // Play Store: strictly increasing per upload (26 = v1.24 store/F-Droid packaging)
+        versionCode = 26
+        versionName = "1.24"
+    }
+
+    // F-Droid: strip dependency metadata so their from-source rebuild can be
+    // compared 1:1 with our release artifacts (reproducible-build check).
+    // Optional for Play — the bundle simply carries no library inventory.
+    dependenciesInfo {
+        includeInApk = false
+        includeInBundle = false
     }
 
     signingConfigs {

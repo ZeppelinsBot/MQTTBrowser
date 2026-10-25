@@ -1,0 +1,2 @@
+• Store & build packaging: fastlane metadata added, dependency metadata stripped from APK/AAB (reproducible-build friendly for F-Droid), source tree cleaned of prebuilt binaries.
+• No functional changes over v1.23.

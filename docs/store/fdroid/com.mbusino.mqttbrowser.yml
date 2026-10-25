@@ -1,8 +1,14 @@
-RepoType: git
-Repo: https://github.com/ZeppelinsBot/MQTTBrowser.git
+Categories:
+  - Connectivity
+License: GPL-3.0-only
+AuthorName: ZeppelinsBot
+AuthorEmail: mbusinolib@gmail.com
+WebSite: https://github.com/ZeppelinsBot/MQTTBrowser
+SourceCode: https://github.com/ZeppelinsBot/MQTTBrowser
+IssueTracker: https://github.com/ZeppelinsBot/MQTTBrowser/issues
 
 Name: MQTT Browser
-Summary: "Explore MQTT brokers — topic tree, live messages, TLS and retained handling"
+Summary: Explore MQTT brokers — topic tree, live messages, TLS and retained handling
 Description: |
   MQTT Browser is a fast, clean MQTT client and topic explorer for Android.
   Connect to any MQTT broker and explore its topics like a file tree — built
@@ -20,19 +26,8 @@ Description: |
   No accounts, no cloud, no tracking: the app talks only to the brokers you
   configure yourself.
 
-Categories:
-  - Connectivity
-License: GPL-3.0-only
-AuthorName: ZeppelinsBot
-AuthorEmail: mbusinolib@gmail.com
-WebSite: https://github.com/ZeppelinsBot/MQTTBrowser
-SourceCode: https://github.com/ZeppelinsBot/MQTTBrowser
-IssueTracker: https://github.com/ZeppelinsBot/MQTTBrowser/issues
-
-AutoUpdateMode: Version
-UpdateCheckMode: Tags
-CurrentVersion: '1.24'
-CurrentVersionCode: 26
+RepoType: git
+Repo: https://github.com/ZeppelinsBot/MQTTBrowser.git
 
 Builds:
   - versionName: '1.24'
@@ -41,3 +36,8 @@ Builds:
     subdir: app
     gradle:
       - yes
+
+AutoUpdateMode: Version
+UpdateCheckMode: Tags
+CurrentVersion: '1.24'
+CurrentVersionCode: 26

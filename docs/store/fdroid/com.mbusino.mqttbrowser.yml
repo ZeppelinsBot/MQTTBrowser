@@ -25,6 +25,7 @@ Categories:
   - Tools
 License: GPL-3.0-only
 AuthorName: ZeppelinsBot
+AuthorEmail: mbusinolib@gmail.com
 WebSite: https://github.com/ZeppelinsBot/MQTTBrowser
 SourceCode: https://github.com/ZeppelinsBot/MQTTBrowser
 IssueTracker: https://github.com/ZeppelinsBot/MQTTBrowser/issues
@@ -37,7 +38,7 @@ CurrentVersionCode: 26
 Builds:
   - versionName: 1.24
     versionCode: 26
-    commit: v1.24
+    commit: ab68dc3e0d2f93ac8796c5f4002ca5d6e33715c7
     subdir: app
     gradle:
       - yes

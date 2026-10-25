@@ -1,0 +1,2 @@
+• Fixed "Filter topics": it now filters the entire topic tree, expands matching branches automatically and shows a "No topics match" hint instead of an empty list.
+• Solid status bar restored on Android 15+ — no more semi-transparent fullscreen look.

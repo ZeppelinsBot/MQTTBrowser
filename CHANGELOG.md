@@ -2,6 +2,13 @@
 
 All notable changes to MQTT Browser will be documented in this file.
 
+## [1.22] - 2026-10-25
+
+### Fixed
+- "Filter topics" now filters the whole tree: the search term was previously applied to the top-level branches only, so everything below stayed visible until the term matched nothing at all — then the entire list vanished at once
+- Matching branches are auto-expanded while a filter is active (manual collapse during filtering is kept; expand/collapse-all and the pre-filter expansion are restored when the filter is cleared)
+- Empty result now shows "No topics match \"…\"" instead of a blank list
+
 ## [1.21] - 2026-09-23
 
 ### Added

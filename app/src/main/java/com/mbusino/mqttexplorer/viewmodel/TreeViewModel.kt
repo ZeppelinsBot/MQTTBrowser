@@ -27,7 +27,23 @@ class TreeViewModel : ViewModel() {
     private val _searchQuery = MutableStateFlow("")
     val searchQuery: StateFlow<String> = _searchQuery.asStateFlow()
 
+    /**
+     * While a filter is active every matching branch is expanded automatically,
+     * so _expandedNodes alone can no longer describe what is visible. Paths the
+     * user collapsed by hand during an active filter are collected here instead:
+     * they survive recomposition (incoming messages) and are dropped together
+     * with the filter, restoring the pre-filter expansion.
+     */
+    private val _collapsedWhileFiltering = MutableStateFlow(setOf<String>())
+    val collapsedWhileFiltering: StateFlow<Set<String>> = _collapsedWhileFiltering.asStateFlow()
+
     fun toggleNode(path: String) {
+        if (_searchQuery.value.isNotBlank()) {
+            val current = _collapsedWhileFiltering.value.toMutableSet()
+            if (!current.remove(path)) current.add(path)
+            _collapsedWhileFiltering.value = current
+            return
+        }
         val current = _expandedNodes.value.toMutableSet()
         if (current.contains(path)) {
             current.remove(path)
@@ -38,12 +54,24 @@ class TreeViewModel : ViewModel() {
     }
 
     fun expandAll(node: TopicNode) {
+        if (_searchQuery.value.isNotBlank()) {
+            // The filter already expands every match — undo a manual collapse.
+            _collapsedWhileFiltering.value = emptySet()
+            return
+        }
         val paths = mutableSetOf<String>()
         collectPaths(node, paths)
         _expandedNodes.value = paths
     }
 
     fun collapseAll() {
+        if (_searchQuery.value.isNotBlank()) {
+            // Collapse every branch the filter currently shows.
+            val visible = mutableSetOf<String>()
+            collectMatchingPaths(topicTree.value, visible)
+            _collapsedWhileFiltering.value = visible
+            return
+        }
         _expandedNodes.value = emptySet()
     }
 
@@ -56,15 +84,23 @@ class TreeViewModel : ViewModel() {
         }
     }
 
+    /** Branch paths that remain visible under the current search. */
+    private fun collectMatchingPaths(node: TopicNode, paths: MutableSet<String>) {
+        if (_searchQuery.value.isBlank()) return
+        for (child in node.sortedChildren) {
+            if (hasMatchingDescendant(child)) {
+                paths.add(child.fullPath)
+                collectMatchingPaths(child, paths)
+            }
+        }
+    }
+
     fun onSearchQueryChange(query: String) {
         _searchQuery.value = query
+        if (query.isBlank()) _collapsedWhileFiltering.value = emptySet()
     }
 
-    fun matchesSearch(node: TopicNode): Boolean {
-        if (_searchQuery.value.isBlank()) return true
-        return node.fullPath.contains(_searchQuery.value, ignoreCase = true)
-    }
-
+    /** True when the node itself or any topic below it matches the current search. */
     fun hasMatchingDescendant(node: TopicNode): Boolean {
         if (_searchQuery.value.isBlank()) return true
         if (node.fullPath.contains(_searchQuery.value, ignoreCase = true)) return true

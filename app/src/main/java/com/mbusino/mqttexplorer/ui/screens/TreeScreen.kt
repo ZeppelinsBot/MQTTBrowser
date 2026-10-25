@@ -66,6 +66,7 @@ fun TreeScreen(
     val topicTree by viewModel.topicTree.collectAsStateWithLifecycle()
     val expandedNodes by viewModel.expandedNodes.collectAsStateWithLifecycle()
     val searchQuery by viewModel.searchQuery.collectAsStateWithLifecycle()
+    val collapsedWhileFiltering by viewModel.collapsedWhileFiltering.collectAsStateWithLifecycle()
     val connectionState by connectionViewModel.connectionState.collectAsStateWithLifecycle()
     val subscribeMode by viewModel.subscribeMode.collectAsStateWithLifecycle()
     val reconnectDecision by viewModel.reconnectDecision.collectAsStateWithLifecycle()
@@ -211,6 +212,7 @@ fun TreeScreen(
 
             // Topic tree
             val filteredTree = filterTree(topicTree, viewModel)
+            val filtering = searchQuery.isNotBlank()
 
             LazyColumn(
                 modifier = Modifier.fillMaxSize(),
@@ -237,10 +239,34 @@ fun TreeScreen(
                             )
                         }
                     }
+                } else if (filteredTree.isEmpty()) {
+                    item {
+                        Column(
+                            modifier = Modifier
+                                .fillMaxWidth()
+                                .padding(32.dp),
+                            horizontalAlignment = Alignment.CenterHorizontally
+                        ) {
+                            Text(
+                                text = "No topics match \"$searchQuery\"",
+                                style = MaterialTheme.typography.bodyLarge,
+                                color = MaterialTheme.colorScheme.onSurfaceVariant
+                            )
+                            Spacer(modifier = Modifier.height(8.dp))
+                            Text(
+                                text = "The filter hides every topic.\nClear or shorten it to see the tree again.",
+                                style = MaterialTheme.typography.bodyMedium,
+                                color = MaterialTheme.colorScheme.onSurfaceVariant
+                            )
+                        }
+                    }
                 } else {
                     renderTreeNodes(
                         nodes = filteredTree,
                         expandedNodes = expandedNodes,
+                        collapsedWhileFiltering = collapsedWhileFiltering,
+                        filtering = filtering,
+                        isVisible = viewModel::hasMatchingDescendant,
                         depth = 0,
                         onToggle = { viewModel.toggleNode(it) },
                         onNavigate = { path, name -> onTopicClick(path, name) },
@@ -499,15 +525,21 @@ fun TreeScreen(
     }
 }
 
+/**
+ * Only branches containing a match (or being a match themselves) stay visible.
+ * [renderTreeNodes] applies the same predicate on every deeper level — filtering
+ * the top level alone made the filter look dead until nothing matched at all.
+ */
 private fun filterTree(root: TopicNode, viewModel: TreeViewModel): List<TopicNode> {
-    return root.sortedChildren.filter { child ->
-        viewModel.hasMatchingDescendant(child) || viewModel.matchesSearch(child)
-    }
+    return root.sortedChildren.filter { viewModel.hasMatchingDescendant(it) }
 }
 
 private fun androidx.compose.foundation.lazy.LazyListScope.renderTreeNodes(
     nodes: List<TopicNode>,
     expandedNodes: Set<String>,
+    collapsedWhileFiltering: Set<String>,
+    filtering: Boolean,
+    isVisible: (TopicNode) -> Boolean,
     depth: Int,
     onToggle: (String) -> Unit,
     onNavigate: (String, String) -> Unit,
@@ -515,7 +547,14 @@ private fun androidx.compose.foundation.lazy.LazyListScope.renderTreeNodes(
     onLongPress: (TopicNode) -> Unit = {}
 ) {
     for (node in nodes) {
-        val isExpanded = expandedNodes.contains(node.fullPath) || node.fullPath.isEmpty()
+        // Same predicate on every level: without it only the top level was filtered.
+        if (!isVisible(node)) continue
+        val isExpanded = when {
+            node.fullPath.isEmpty() -> true
+            // Active filter: expand every match so the result is actually visible.
+            filtering -> !collapsedWhileFiltering.contains(node.fullPath)
+            else -> expandedNodes.contains(node.fullPath)
+        }
         val hasChildren = node.children.isNotEmpty()
         item(key = node.fullPath) {
             TopicTreeItem(
@@ -527,10 +566,13 @@ private fun androidx.compose.foundation.lazy.LazyListScope.renderTreeNodes(
                 onLongPress = { onLongPress(node) }
             )
         }
-        if (isExpanded && node.children.isNotEmpty()) {
+        if (isExpanded && hasChildren) {
             renderTreeNodes(
                 nodes = node.sortedChildren,
                 expandedNodes = expandedNodes,
+                collapsedWhileFiltering = collapsedWhileFiltering,
+                filtering = filtering,
+                isVisible = isVisible,
                 depth = depth + 1,
                 onToggle = onToggle,
                 onNavigate = onNavigate,

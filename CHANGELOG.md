@@ -2,6 +2,12 @@
 
 All notable changes to MQTT Browser will be documented in this file.
 
+## [1.23] - 2026-10-25
+
+### Fixed
+- Status bar is solid again: Android 15+ (targetSdk 35+) enforces edge-to-edge, so `statusBarColor` is ignored and the transparent system bar sat over the pale top app bar — the app read as a semi-transparent fullscreen window. The app now draws its own opaque `primary` status bar strip below the system icons, giving the classic non-fullscreen layout.
+- Status-bar icon contrast now follows the strip color (light theme → light icons on the dark `primary` bar, dark theme → dark icons on the light `primary` bar)
+
 ## [1.22] - 2026-10-25
 
 ### Fixed

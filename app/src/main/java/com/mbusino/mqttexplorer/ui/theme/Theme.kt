@@ -44,8 +44,13 @@ fun MQTTExplorerTheme(
     if (!view.isInEditMode) {
         SideEffect {
             val window = (view.context as Activity).window
+            // Pre-Android 15 the system paints the status bar in `primary`; on Android 15+
+            // this attribute is ignored (edge-to-edge enforcement) and MainActivity draws an
+            // opaque `primary` strip instead — both paths share one bar color.
             window.statusBarColor = colorScheme.primary.toArgb()
-            WindowCompat.getInsetsController(window, view).isAppearanceLightStatusBars = !darkTheme
+            // `primary` is dark in the light scheme and light in the dark scheme, so the
+            // system icons have to invert with it: light theme -> light (white) icons.
+            WindowCompat.getInsetsController(window, view).isAppearanceLightStatusBars = darkTheme
         }
     }
 

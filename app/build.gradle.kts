@@ -11,9 +11,9 @@ android {
         applicationId = "com.mbusino.mqttbrowser"
         minSdk = 26
         targetSdk = 36
-        // Play Store: strictly increasing per upload (24 = v1.22 topic filter fix)
-        versionCode = 24
-        versionName = "1.22"
+        // Play Store: strictly increasing per upload (25 = v1.23 solid status bar / no fullscreen)
+        versionCode = 25
+        versionName = "1.23"
     }
 
     signingConfigs {

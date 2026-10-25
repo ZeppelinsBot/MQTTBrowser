@@ -3,7 +3,13 @@ package com.mbusino.mqttexplorer
 import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
+import androidx.compose.foundation.background
+import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.WindowInsets
 import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.statusBars
+import androidx.compose.foundation.layout.windowInsetsTopHeight
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Surface
 import androidx.compose.runtime.Composable
@@ -17,6 +23,7 @@ import androidx.navigation.NavType
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
+import androidx.compose.ui.Alignment
 import androidx.navigation.navArgument
 import com.mbusino.mqttexplorer.mqtt.ConnectionState
 import com.mbusino.mqttexplorer.mqtt.MqttManager
@@ -38,7 +45,25 @@ class MainActivity : ComponentActivity() {
                     modifier = Modifier.fillMaxSize(),
                     color = MaterialTheme.colorScheme.background
                 ) {
-                    MQTTExplorerNavHost()
+                    Box(modifier = Modifier.fillMaxSize()) {
+                        MQTTExplorerNavHost()
+
+                        // Android 15+ (targetSdk 35+) enforces edge-to-edge: the status bar
+                        // turns transparent, window.statusBarColor is ignored there, and the
+                        // pale top app bar showed straight through — the app looked like a
+                        // semi-transparent fullscreen window. Draw our own opaque status bar
+                        // strip (same `primary` the classic statusBarColor used) on top, so the
+                        // window reads as a normal app with a solid bar again. Content already
+                        // starts below this area: every screen's TopAppBar consumes the status
+                        // bar inset, so nothing is covered.
+                        Box(
+                            modifier = Modifier
+                                .align(Alignment.TopCenter)
+                                .fillMaxWidth()
+                                .windowInsetsTopHeight(WindowInsets.statusBars)
+                                .background(MaterialTheme.colorScheme.primary)
+                        )
+                    }
                 }
             }
         }
